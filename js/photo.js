@@ -21,7 +21,7 @@ const generateComments = () => {
 
 const createPhotoObject = () => ({
   id: createRandomIdFromRangeGenerator(1, 25)(),
-  url: `photos/${getRandomInteger(1, 6)}.jpg`,
+  url: `photos/${getRandomInteger(1, 25)}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger(15, 200),
   comments: generateComments(),
