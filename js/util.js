@@ -11,17 +11,15 @@ export const getRandomArrayElement = (elements) =>
 let lastId = 1;
 export const generateUniqueId = () => lastId++;
 
-export const createRandomIdFromRangeGenerator = (min, max) => {
-  const PREVIOUS_VALUES = [];
-  return () => {
-    let currentValue = getRandomInteger(min, max);
-    if (PREVIOUS_VALUES.length >= (max - min + 1)) {
-      return null;
-    }
-    while (PREVIOUS_VALUES.includes(currentValue)) {
-      currentValue = getRandomInteger(min, max);
-    }
-    PREVIOUS_VALUES.push(currentValue);
-    return currentValue;
-  };
+const PREVIOUS_VALUES = [];
+export const createRandomIdFromRangeGenerator = (min, max) => () => {
+  let currentValue = getRandomInteger(min, max);
+  if (PREVIOUS_VALUES.length >= (max - min + 1)) {
+    return null;
+  }
+  while (PREVIOUS_VALUES.includes(currentValue)) {
+    currentValue = getRandomInteger(min, max);
+  }
+  PREVIOUS_VALUES.push(currentValue);
+  return currentValue;
 };

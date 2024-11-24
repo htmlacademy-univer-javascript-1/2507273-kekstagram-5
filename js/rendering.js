@@ -1,23 +1,30 @@
 import { generatePhotos } from './photo.js';
+import { makeFull } from './fullPhotoRendering.js';
 
-const PICTURES_TITLE = document.querySelector('.pictures__title');
-PICTURES_TITLE.classList.remove('visually-hidden');
+export const renderPhotoes = () => {
+  const picturesTitle = document.querySelector('.pictures__title');
+  picturesTitle.classList.remove('visually-hidden');
 
-const PICTURE_ELEMENT = document.querySelector('.pictures');
-const PICTURE_TEMPLATE = document.querySelector('#picture')
-  .content
-  .querySelector('.picture');
+  const pictureElements = document.querySelector('.pictures');
+  const pictureTemplate = document.querySelector('#picture')
+    .content
+    .querySelector('.picture');
 
-const RANDOM_PICTURES = generatePhotos();
-const PICTURES_FRAGMENT = document.createDocumentFragment();
+  const randomPictures = generatePhotos();
+  const picturesFragment = document.createDocumentFragment();
 
-RANDOM_PICTURES.forEach(({url, description, likes, comments}) => {
-  const PICTURE = PICTURE_TEMPLATE.cloneNode(true);
-  PICTURE.querySelector('.picture__img').src = url;
-  PICTURE.querySelector('.picture__img').alt = description;
-  PICTURE.querySelector('.picture__likes').textContent = likes;
-  PICTURE.querySelector('.picture__comments').textContent = comments;
-  PICTURES_FRAGMENT.appendChild(PICTURE);
-});
+  randomPictures.forEach(({url, description, likes, comments, id}) => {
+    const picture = pictureTemplate.cloneNode(true);
+    picture.querySelector('.picture__img').src = url;
+    picture.querySelector('.picture__img').alt = description;
+    picture.querySelector('.picture__likes').textContent = likes;
+    picture.querySelector('.picture__comments').textContent = comments.length;
+    picture.dataset.thumbnailId = id;
+    picturesFragment.appendChild(picture);
+  });
 
-PICTURE_ELEMENT.appendChild(PICTURES_FRAGMENT);
+  pictureElements.appendChild(picturesFragment);
+  makeFull(randomPictures);
+};
+
+
