@@ -1,4 +1,6 @@
-import { renderPhotoes } from './rendering.js';
-renderPhotoes();
+import { renderPhotos } from './rendering.js';
+import { addListenersOnForm } from './imgUpload.js';
 
+renderPhotos();
+addListenersOnForm();
 

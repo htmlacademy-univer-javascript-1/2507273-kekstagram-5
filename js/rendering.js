@@ -1,7 +1,7 @@
 import { generatePhotos } from './photo.js';
 import { makeFull } from './fullPhotoRendering.js';
 
-export const renderPhotoes = () => {
+export const renderPhotos = () => {
   const picturesTitle = document.querySelector('.pictures__title');
   picturesTitle.classList.remove('visually-hidden');
 
