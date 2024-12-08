@@ -1,4 +1,5 @@
 import{checkValidation, form} from './formValidation.js';
+import { editPhoto } from './photoRedactor.js';
 
 export const addListenersOnForm = () => {
   const fileInput = document.querySelector('.img-upload__input');
@@ -28,6 +29,7 @@ export const addListenersOnForm = () => {
     body.classList.remove('modal-open');
     document.querySelector('.img-upload__form').reset();
     fileInput.value = '';
+    form.reset();
     form.removeEventListener('keydown', onEscPress);
   }
 
@@ -36,6 +38,7 @@ export const addListenersOnForm = () => {
       overlay.classList.remove('hidden');
       body.classList.add('modal-open');
       form.addEventListener('keydown', onEscPress);
+      editPhoto();
     }
   });
 
