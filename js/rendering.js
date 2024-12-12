@@ -1,7 +1,6 @@
-import { generatePhotos } from './photo.js';
 import { makeFull } from './fullPhotoRendering.js';
 
-export const renderPhotos = () => {
+export const renderPhotos = (pictures) => {
   const picturesTitle = document.querySelector('.pictures__title');
   picturesTitle.classList.remove('visually-hidden');
 
@@ -10,10 +9,8 @@ export const renderPhotos = () => {
     .content
     .querySelector('.picture');
 
-  const randomPictures = generatePhotos();
   const picturesFragment = document.createDocumentFragment();
-
-  randomPictures.forEach(({url, description, likes, comments, id}) => {
+  pictures.forEach(({ id, url, likes, comments, description}) => {
     const picture = pictureTemplate.cloneNode(true);
     picture.querySelector('.picture__img').src = url;
     picture.querySelector('.picture__img').alt = description;
@@ -24,7 +21,7 @@ export const renderPhotos = () => {
   });
 
   pictureElements.appendChild(picturesFragment);
-  makeFull(randomPictures);
+  makeFull(pictures);
 };
 
 

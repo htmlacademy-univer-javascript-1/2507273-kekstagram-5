@@ -1,7 +1,11 @@
-import{checkValidation, form} from './formValidation.js';
+import{validateForm, form} from './formValidation.js';
 import { editPhoto } from './photoRedactor.js';
+import {sendData} from './api.js';
+import {showAlert} from './utils.js';
 
-export const addListenersOnForm = () => {
+const addListenersOnForm = () =>{
+  const submitButton = form.querySelector('.img-upload__submit');
+  const sliderElement = document.querySelector('.effect-level__slider');
   const fileInput = document.querySelector('.img-upload__input');
   const overlay = document.querySelector('.img-upload__overlay');
   const body = document.body;
@@ -24,12 +28,12 @@ export const addListenersOnForm = () => {
     }
   };
 
-  function closeForm() {
+  function closeForm(){
     overlay.classList.add('hidden');
     body.classList.remove('modal-open');
-    document.querySelector('.img-upload__form').reset();
-    fileInput.value = '';
     form.reset();
+    fileInput.value = '';
+    sliderElement.noUiSlider.destroy();
     form.removeEventListener('keydown', onEscPress);
   }
 
@@ -42,13 +46,38 @@ export const addListenersOnForm = () => {
     }
   });
 
-
   closeButton.addEventListener('click', () => {
     closeForm();
   });
 
-  form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    checkValidation();
-  });
+  const blockSubmitButton = () => {
+    submitButton.disabled = true;
+  };
+
+  const unblockSubmitButton = () => {
+    submitButton.disabled = false;
+  };
+
+
+  const setImageLoaderFormSubmit = (onSuccess) => {
+    form.addEventListener('submit', (evt) => {
+      evt.preventDefault();
+      const isValid = validateForm();
+      if (isValid) {
+        blockSubmitButton();
+        sendData(new FormData(evt.target))
+          .then(onSuccess)
+          .catch(
+            (err) => {
+              showAlert(err.message);
+            }
+          )
+          .finally(unblockSubmitButton);
+      }
+    });
+  };
+
+  setImageLoaderFormSubmit(closeForm);
 };
+
+export {addListenersOnForm};

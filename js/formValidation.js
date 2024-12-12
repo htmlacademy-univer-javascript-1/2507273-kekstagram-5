@@ -1,7 +1,6 @@
 const form = document.querySelector('.img-upload__form');
 
-
-const checkValidation = ()=> {
+const validateForm = () =>{
 
   const pristine = new Pristine(form, {
     classTo: 'img-upload__field-wrapper',
@@ -44,8 +43,6 @@ const checkValidation = ()=> {
   const hashtagsField = form.querySelector('.text__hashtags');
   pristine.addValidator(hashtagsField, validateHashtags);
 
-  const isValid = pristine.validate();
-
   const showSuccessMessage = () => {
     const successTemplate = document.querySelector('#success').content.cloneNode(true);
     document.body.appendChild(successTemplate);
@@ -74,15 +71,16 @@ const checkValidation = ()=> {
     });
   };
 
+  const isValid = pristine.validate();
+
   if (isValid) {
     showSuccessMessage('success');
-    form.reset();
-    pristine.reset();
   } else {
     showErrorMessage('error');
   }
+
+  return isValid;
 };
 
-
-export{checkValidation, form};
+export{validateForm, form};
 
