@@ -1,5 +1,3 @@
-
-
 const makeComments = (comments, socialCommentsList) =>{
   comments.forEach((comment) => {
     const commentElement = document.createElement('li');

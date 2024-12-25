@@ -1,7 +1,7 @@
-import{validateForm, form} from './formValidation.js';
+import{ validateForm, form } from './formValidation.js';
 import { editPhoto } from './photoRedactor.js';
-import {sendData} from './api.js';
-import {showAlert} from './utils.js';
+import { sendData } from './api.js';
+import { showAlert } from './utils.js';
 
 const addListenersOnForm = () =>{
   const submitButton = form.querySelector('.img-upload__submit');
