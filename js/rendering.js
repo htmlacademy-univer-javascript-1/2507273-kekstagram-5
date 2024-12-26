@@ -1,4 +1,4 @@
-import { makeFull } from './fullPhotoRendering.js';
+import { makeFull } from './full-photo-rendering.js';
 
 export const renderPhotos = (pictures) => {
   const pictureElements = document.querySelector('.pictures');
