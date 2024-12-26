@@ -1,5 +1,5 @@
 
-import { addListenersOnForm } from './imgUpload.js';
+import { addListenersOnForm } from './img-upload.js';
 import { getData } from './api.js';
 import { showAlert } from './utils.js';
 import { filter } from './filtration.js';

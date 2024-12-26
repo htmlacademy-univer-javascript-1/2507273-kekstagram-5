@@ -1,3 +1,5 @@
+import { throttle } from './utils.js';
+
 const editScale = () =>{
   const scaleControlSmaller = document.querySelector('.scale__control--smaller');
   const scaleControlBigger = document.querySelector('.scale__control--bigger');
@@ -8,28 +10,35 @@ const editScale = () =>{
   const MAX_SCALE = 100;
   const SCALE_STEP = 25;
 
-  const updateScale = (scale) => {
+  const updateScale = throttle((scale) => {
     scaleControlValue.value = `${scale}%`;
     previewImage.style.transform = `scale(${scale / 100})`;
-  };
+  }, 100);
 
-  scaleControlSmaller.addEventListener('click', () => {
+  const handleSmallerClick = () => {
     let currentScale = parseInt(scaleControlValue.value, 10);
     if (currentScale > MIN_SCALE) {
       currentScale -= SCALE_STEP;
       updateScale(currentScale);
     }
-  });
+  };
 
-  scaleControlBigger.addEventListener('click', () => {
+  const handleBiggerClick = () => {
     let currentScale = parseInt(scaleControlValue.value, 10);
     if (currentScale < MAX_SCALE) {
       currentScale += SCALE_STEP;
       updateScale(currentScale);
     }
-  });
+  };
 
-  updateScale(MAX_SCALE);
+  scaleControlSmaller.addEventListener('click', handleSmallerClick);
+  scaleControlBigger.addEventListener('click', handleBiggerClick);
+
+
+  return () => {
+    scaleControlSmaller.removeEventListener('click', handleSmallerClick);
+    scaleControlBigger.removeEventListener('click', handleBiggerClick);
+  };
 };
 
 const editEffects = () => {
@@ -147,7 +156,18 @@ const editEffects = () => {
 };
 
 export const editPhoto = () => {
-  editScale();
+  const resetScale = editScale();
   editEffects();
+
+  const fileInput = document.querySelector('.img-upload__input');
+  const overlay = document.querySelector('.img-upload__overlay');
+  const body = document.body;
+  fileInput.addEventListener('change', () => {
+    if (fileInput.files.length > 0) {
+      overlay.classList.remove('hidden');
+      body.classList.add('modal-open');
+      resetScale();
+    }
+  });
 };
 

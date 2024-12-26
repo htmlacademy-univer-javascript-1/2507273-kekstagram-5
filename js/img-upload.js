@@ -1,5 +1,5 @@
-import{ validateForm, form } from './formValidation.js';
-import { editPhoto } from './photoRedactor.js';
+import{ validateForm, form } from './form-validation.js';
+import { editPhoto } from './photo-redactor.js';
 import { sendData } from './api.js';
 import { showAlert } from './utils.js';
 
@@ -15,13 +15,22 @@ export const addListenersOnForm = () =>{
 
   const isEscapeKey = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-  const isFieldFocused = () =>
-    document.activeElement.classList.contains('text__hashtags') ||
-    document.activeElement.classList.contains('text__description');
+  const hashtagField = document.querySelector('.text__hashtags');
+  const descriptionField = document.querySelector('.text__description');
+  let isInputFocused = false;
+
+  [hashtagField, descriptionField].forEach((field) => {
+    field.addEventListener('focus', () => {
+      isInputFocused = true;
+    });
+    field.addEventListener('blur', () => {
+      isInputFocused = false;
+    });
+  });
 
   const onEscPress = (evt) => {
     if (isEscapeKey(evt)) {
-      if (isFieldFocused()) {
+      if (isInputFocused) {
         evt.stopPropagation();
       } else {
         evt.preventDefault();
@@ -31,6 +40,14 @@ export const addListenersOnForm = () =>{
   };
 
   function closeForm(){
+    overlay.classList.add('hidden');
+    body.classList.remove('modal-open');
+    const previewImage = document.querySelector('.img-upload__preview img');
+    const scaleControlValue = document.querySelector('.scale__control--value');
+
+    previewImage.style.transform = 'scale(1)';
+    scaleControlValue.value = '100%';
+
     overlay.classList.add('hidden');
     body.classList.remove('modal-open');
     form.reset();
